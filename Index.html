@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jegan P — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Literata:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: rgba(255,255,255,0.07);
+    --accent: #00e5c3;
+    --accent2: #7b61ff;
+    --text: #f0eff8;
+    --muted: #8b8aa0;
+    --tag-bg: rgba(0,229,195,0.1);
+    --tag-text: #00e5c3;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Literata', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Grid background */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,195,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,195,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 .name-highlight {
+    display: block;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-tagline {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 500px;
+    margin-bottom: 3rem;
+    font-style: italic;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    background: var(--accent);
+    color: #0a0a0f;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Scrolling ticker */
+  .ticker {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0.9rem 0;
+    background: var(--surface);
+    position: relative;
+    z-index: 1;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 3rem;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+  }
+
+  .ticker-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ABOUT */
+  .about {
+    padding: 8rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    position: relative;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 60px; height: 60px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+  }
+
+  .about-card::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 60px; height: 60px;
+    border-bottom: 2px solid var(--accent2);
+    border-right: 2px solid var(--accent2);
+  }
+
+  .about-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-stat:last-child { margin-bottom: 0; }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+  }
+
+  .about-content h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .about-content p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+
+  /* SKILLS */
+  .skills-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 6rem 4rem;
+  }
+
+  .skills-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  .skill-card {
+    background: var(--card);
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .skill-card:hover { background: #1e1e2e; }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .skill-card:hover::before { transform: scaleX(1); }
+
+  .skill-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .skill-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* EDUCATION */
+  .education {
+    padding: 8rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .edu-timeline {
+    margin-top: 3rem;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .edu-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+  }
+
+  .edu-item {
+    position: relative;
+    padding-left: 2.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .edu-item:last-child { padding-bottom: 0; }
+
+  .edu-dot {
+    position: absolute;
+    left: -2.45rem;
+    top: 0.4rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(0,229,195,0.6);
+  }
+
+  .edu-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-course {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-institution {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-grade {
+    display: inline-block;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid rgba(0,229,195,0.2);
+  }
+
+  /* EXPERIENCE */
+  .experience {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 8rem 4rem;
+  }
+
+  .exp-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .exp-cards {
+    margin-top: 3rem;
+    display: grid;
+    gap: 2rem;
+  }
+
+  .exp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    transition: border-color 0.3s;
+  }
+
+  .exp-card:hover { border-color: rgba(0,229,195,0.3); }
+
+  .exp-number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+    color: rgba(0,229,195,0.12);
+    line-height: 1;
+    user-select: none;
+  }
+
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .exp-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  /* CONTACT */
+  .contact {
+    padding: 8rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .contact p {
+    color: var(--muted);
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 3rem;
+  }
+
+  .contact-details {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .contact-item .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .contact-item .value {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+  }
+
+  .contact-item a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .footer-accent {
+    color: var(--accent);
+  }
+
+  /* ANIMATIONS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hero animation */
+  .hero-label { animation: slideUp 0.6s ease forwards; opacity: 0; animation-delay: 0.2s; }
+  .hero h1 { animation: slideUp 0.7s ease forwards; opacity: 0; animation-delay: 0.4s; }
+  .hero-tagline { animation: slideUp 0.7s ease forwards; opacity: 0; animation-delay: 0.6s; }
+  .hero-cta { animation: slideUp 0.7s ease forwards; opacity: 0; animation-delay: 0.8s; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Glow pulse on hero name */
+  @keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(0,229,195,0.3)); }
+    50% { filter: drop-shadow(0 0 40px rgba(0,229,195,0.6)); }
+  }
+
+  .hero h1 { animation: slideUp 0.7s ease 0.4s forwards, glowPulse 4s ease 1.2s infinite; opacity: 0; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+    .skills-section { padding: 5rem 1.5rem; }
+    .education { padding: 5rem 1.5rem; }
+    .experience { padding: 5rem 1.5rem; }
+    .contact { padding: 5rem 1.5rem; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .exp-card { grid-template-columns: 1fr; gap: 1rem; }
+    .exp-number { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">JP</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-label">Electronics & Communication Engineer</div>
+  <h1>
+    Hello, I'm
+    <span class="name-highlight">Jegan P.</span>
+  </h1>
+  <p class="hero-tagline">A passionate ECE diploma graduate crafting embedded systems, PCB designs, and hardware solutions from Tamil Nadu.</p>
+  <div class="hero-cta">
+    <a href="#experience" class="btn-primary">View My Work</a>
+    <a href="#contact" class="btn-secondary">Get in Touch</a>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot"></span>C Language</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Microcontrollers</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>PCB Production</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Embedded Systems</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Electronics Engineering</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Quality Control</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Supply Chain</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>C Language</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Microcontrollers</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>PCB Production</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Embedded Systems</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Electronics Engineering</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Quality Control</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>Supply Chain</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about">
+    <div class="about-visual fade-in">
+      <div class="about-card">
+        <div class="about-stat">
+          <span class="stat-label">Full Name</span>
+          <span class="stat-value">Jegan P</span>
+        </div>
+        <div class="about-stat">
+          <span class="stat-label">Date of Birth</span>
+          <span class="stat-value">09 January 2000</span>
+        </div>
+        <div class="about-stat">
+          <span class="stat-label">Languages</span>
+          <span class="stat-value">Tamil, English</span>
+        </div>
+        <div class="about-stat">
+          <span class="stat-label">Blood Group</span>
+          <span class="stat-value">B+</span>
+        </div>
+        <div class="about-stat">
+          <span class="stat-label">Location</span>
+          <span class="stat-value">Dindugul, Tamil Nadu</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-content fade-in">
+      <div class="section-label">About Me</div>
+      <h2>Building the hardware of tomorrow.</h2>
+      <p>I am a Diploma in Electronics and Communication Engineering graduate with a strong foundation in embedded systems, microcontrollers, and PCB fabrication. My hands-on internship experience has given me real-world exposure to industrial electronics production.</p>
+      <p>I am driven by the challenge of building reliable, functional hardware and am eager to bring my technical skills to a progressive and innovative environment where I can grow and contribute meaningfully.</p>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="skills-section">
+  <div class="skills-inner">
+    <div class="section-label fade-in">Technical Skills</div>
+    <div class="skills-grid">
+      <div class="skill-card fade-in">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-name">C Language</div>
+        <div class="skill-desc">Foundational programming for embedded & system-level control</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🔌</div>
+        <div class="skill-name">Microcontrollers</div>
+        <div class="skill-desc">Hardware interfacing, control logic & firmware development</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🖥️</div>
+        <div class="skill-name">PCB Production</div>
+        <div class="skill-desc">Lamination, copper & tin electroplating, etching processes</div>
+      </div>
+      <div class="skill-card fade-in">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">Embedded Systems</div>
+        <div class="skill-desc">Core concepts in hardware-software integration</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education" class="education">
+  <div class="section-label fade-in">Education</div>
+  <div class="edu-timeline">
+
+    <div class="edu-item fade-in">
+      <div class="edu-dot"></div>
+      <div class="edu-year">2025</div>
+      <div class="edu-course">Diploma in Electronics & Communication Engineering</div>
+      <div class="edu-institution">Govt. Polytechnic College, Checkanurani — State Board of Tamil Nadu</div>
+      <span class="edu-grade">75%</span>
+    </div>
+
+    <div class="edu-item fade-in">
+      <div class="edu-dot"></div>
+      <div class="edu-year">2019</div>
+      <div class="edu-course">FSHE — Tamil Nadu Polytechnic College</div>
+      <div class="edu-institution">Madurai — State Board of Tamil Nadu</div>
+      <span class="edu-grade">80%</span>
+    </div>
+
+    <div class="edu-item fade-in">
+      <div class="edu-dot"></div>
+      <div class="edu-year">2017</div>
+      <div class="edu-course">Higher Secondary Certificate (HSC)</div>
+      <div class="edu-institution">CSI Higher Secondary School, Batlagundu — State Board of Tamil Nadu</div>
+      <span class="edu-grade">55%</span>
+    </div>
+
+    <div class="edu-item fade-in">
+      <div class="edu-dot"></div>
+      <div class="edu-year">2015</div>
+      <div class="edu-course">SSLC — Secondary School Leaving Certificate</div>
+      <div class="edu-institution">Parasakthi Higher Secondary School, S. Kottaipatti — State Board of Tamil Nadu</div>
+      <span class="edu-grade">77%</span>
+    </div>
+
+  </div>
+</section>
+
+<section id="experience" class="experience">
+  <div class="exp-inner">
+    <div class="section-label fade-in">Work & Internship</div>
+    <div class="exp-cards">
+
+      <div class="exp-card fade-in">
+        <div class="exp-number">01</div>
+        <div>
+          <div class="exp-company">QUATEK Technologies, Kappalur, Madurai</div>
+          <div class="exp-role">Internship — PCB Production</div>
+          <div class="exp-desc">Completed a one-month intensive internship focused on the end-to-end production of Printed Circuit Boards. Gained hands-on knowledge in lamination, copper and tin electroplating, etching, and quality checking processes used in industrial PCB manufacturing.</div>
+        </div>
+      </div>
+
+      <div class="exp-card fade-in">
+        <div class="exp-number">02</div>
+        <div>
+          <div class="exp-company">TVS Supply Chain Solutions, Madurai</div>
+          <div class="exp-role">Quality Department</div>
+          <div class="exp-desc">Ensured 100% inward quality compliance from in-house processes at the quality department with zero discrepancy at the receipt stage. Managed invoice processing for Brakes India customer orders and maintained accurate system documentation activities.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="section-label" style="justify-content: center; margin-bottom: 1.5rem;">Get In Touch</div>
+  <h2 class="fade-in">Let's work<br>together.</h2>
+  <p class="fade-in">Open to opportunities in electronics, embedded systems, and hardware roles.</p>
+
+  <div class="contact-details fade-in">
+    <div class="contact-item">
+      <span class="label">Email</span>
+      <a href="mailto:psjegan11@gmail.com" class="value">psjegan11@gmail.com</a>
+    </div>
+    <div class="contact-item">
+      <span class="label">Phone</span>
+      <span class="value">+91 8489886066</span>
+    </div>
+    <div class="contact-item">
+      <span class="label">Location</span>
+      <span class="value">Dindugul, Tamil Nadu</span>
+    </div>
+  </div>
+
+  <a href="mailto:psjegan11@gmail.com" class="btn-primary">Send a Message</a>
+</section>
+
+<footer>
+  <p>© 2025 <span class="footer-accent">Jegan P</span> — Electronics & Communication Engineer</p>
+  <p>Designed with <span class="footer-accent">♥</span> — Tamil Nadu, India</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
